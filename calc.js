@@ -1,22 +1,17 @@
 /*----------------------------
 Math Functions--------------*/
-
-//add
 function add(a, b) {
   return a + b;
 }
 
-//subtract
 function subtract(a, b) {
   return a - b;
 }
 
-//multiply
 function multiply(a, b) {
   return a * b;
 }
 
-//divide
 function divide(a, b) {
   return a / b;
 }
@@ -47,21 +42,29 @@ function doMath(op, a, b) {
 }
 
 function setNumber(num) {
-  if (primaryDisplay.textContent === '0' || resetDisplay)
+  if (primaryDisplay.textContent === '' || resetDisplay)
     clrDisplay();
   primaryDisplay.textContent += num;
 }
 
 function addDecimal() {
-  if (resetDisplay) clrDisplay()
+  if (resetDisplay) clrDisplay();
   if (primaryDisplay.textContent === '')
     primaryDisplay.textContent = '0';
   if (primaryDisplay.textContent.includes('.')) return;
   primaryDisplay.textContent += '.';
 }
 
+function plusMinus() {
+  if (resetDisplay) clrDisplay()
+  if (primaryDisplay.textContent.slice(0,1) === '-') {
+    primaryDisplay.textContent = primaryDisplay.textContent.substring(1);
+  } else {
+    primaryDisplay.textContent = '-' + primaryDisplay.textContent;
+  }
+}
+
 function setOpType(op) {
-  //lastInputOp = true;
   if (currentOperator !== null) doMathCalc();
   operandOne = primaryDisplay.textContent;
   currentOperator = op;
@@ -73,22 +76,33 @@ function setOpType(op) {
 function doMathCalc() {
   if (currentOperator === null || resetDisplay) return;
   if (currentOperator === '/' && primaryDisplay.textContent === '0') {
-    alert('nice try zoolander')
+    alert('nice try you fuckin zoolander')
     return;
   }
   operandTwo = primaryDisplay.textContent;
   primaryDisplay.textContent = roundReturn(doMath(currentOperator, operandOne, operandTwo));
   secondaryDisplay.textContent = `${operandOne} ${currentOperator} ${operandTwo} =`;
   currentOperator = null;
+  resetDisplay = true;
 }
 
-function undoLastInput() { //need to set undo operator input
-  //if (lastInputOperator) {lastInputOp = false;};
-  primaryDisplay.textContent = primaryDisplay.textContent.toString().slice(0, -1);
+//functions exactly like backspace key expected to
+function undoLastInput() {
+  if (resetDisplay) return;
+  if (primaryDisplay.textContent !== '') {
+    primaryDisplay.textContent = primaryDisplay.textContent.toString().slice(0, -1);
+  } else {
+    primaryDisplay.textContent = secondaryDisplay.textContent.toString().slice(0, -1);
+    secondaryDisplay.textContent = '';
+    currentOperator = null;
+  }
 }
 
-/*----------------------------
-Display---------------------*/
+//only clears current operand
+function clearEntry() {
+  if (!resetDisplay) primaryDisplay.textContent = '';
+}
+
 //full clear of display and operation
 function clear() {
   primaryDisplay.textContent = '';
@@ -98,7 +112,11 @@ function clear() {
   currentOperator = null;
 }
 
+//contextual display clearing
 function clrDisplay() {
+  if (secondaryDisplay.textContent !== '') {
+    secondaryDisplay.textContent += ` ${primaryDisplay.textContent}`;
+  }
   primaryDisplay.textContent = '';
   resetDisplay = false;
 }
@@ -127,11 +145,11 @@ const primaryDisplay = document.getElementById('line2');
 
 /*----------------------------
 Event listeners-------------*/
-window.addEventListener('keydown', keebInput); //TO DO
+window.addEventListener('keydown', keebInput);
 decimalBtn.addEventListener('click', addDecimal);
-//plusMinusBtn.addEventListener('click', plusMinus); //TO DO
+plusMinusBtn.addEventListener('click', plusMinus);
 equalsBtn.addEventListener('click', doMathCalc);
-//clearEntryBtn.addEventListener('click', clearEntry); //TO DO
+clearEntryBtn.addEventListener('click', clearEntry);
 clearBtn.addEventListener('click', clear);
 backspaceBtn.addEventListener('click', undoLastInput);
 

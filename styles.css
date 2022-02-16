@@ -1,0 +1,83 @@
+:root {
+  --border: rgb(141, 141, 141);
+  --btnbgcolor: #333;
+  --background: #202124;
+}
+
+/*copied from google font api*/
+.material-icons-two-tone.md-light { 
+  color: rgba(255, 255, 255, 1);
+  filter: contrast(4) invert(1);
+  font-size: 36px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  /*font-family: 'Helvetica Neue', sans-serif;*/
+  font-weight: bold;
+  font-size: 48px;
+}
+
+body {
+  background-color: var(--background);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#calc-wrapper {
+  display: flex;
+  margin-top: 10vh;
+}
+
+#calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  max-width: 400px;
+}
+
+#btngrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+}
+
+#display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  border: 2px rgb(141, 141, 141) solid;
+  background-color: rgb(97, 97, 97);
+  color: white;
+  text-align: right;
+  height: 117px;
+}
+
+#line1 {
+  font-size: 36px;
+}
+
+button {
+  padding: 20px;
+  border: 2px var(--border) solid;
+  background-color: var(--btnbgcolor);
+  color: white;
+  /*font-size: 20px;*/
+}
+
+.operator {
+  background-color: rgb(45, 48, 70);
+}
+
+.memorybtns {
+  background-color: rgb(80, 65, 41);
+}

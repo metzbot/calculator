@@ -65,12 +65,16 @@ function plusMinus() {
 }
 
 function setOpType(op) {
+  if (op === secondaryDisplay.textContent.slice(-1)) return;
   if (currentOperator !== null) doMathCalc();
+  if ((primaryDisplay.textContent === '') && (resetDisplay)) {
+    currentOperator = null;
+    return;
+  }
   operandOne = primaryDisplay.textContent;
   currentOperator = op;
   primaryDisplay.textContent = '';
   secondaryDisplay.textContent = `${operandOne} ${currentOperator}`;
-  resetDisplay = true;
 }
 
 function doMathCalc() {
@@ -94,13 +98,14 @@ function undoLastInput() {
   } else {
     primaryDisplay.textContent = secondaryDisplay.textContent.toString().slice(0, -1);
     secondaryDisplay.textContent = '';
-    currentOperator = null;
+    currentOperator = null
+    operandTwo = '';
   }
 }
 
 //only clears current operand
 function clearEntry() {
-  if (!resetDisplay) primaryDisplay.textContent = '';
+  if (resetDisplay === false) primaryDisplay.textContent = '';
 }
 
 //full clear of display and operation
@@ -172,3 +177,8 @@ function keebInput(i) {
     setOpType(i.key);
   }
 }
+
+/* TO DO
+odd behavior why are C and CE buttons toggling/highlighting
+truncate numbers to fit in display
+*/

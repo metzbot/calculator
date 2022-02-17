@@ -44,7 +44,8 @@ function doMath(op, a, b) {
 function setNumber(num) {
   if (primaryDisplay.textContent === '' || resetDisplay)
     clrDisplay();
-  primaryDisplay.textContent += num;
+  if (primaryDisplay.textContent.length < 12)
+    primaryDisplay.textContent += num;
 }
 
 function addDecimal() {
@@ -74,7 +75,8 @@ function setOpType(op) {
   operandOne = primaryDisplay.textContent;
   currentOperator = op;
   primaryDisplay.textContent = '';
-  secondaryDisplay.textContent = `${operandOne} ${currentOperator}`;
+  secondaryDisplay.textContent = `${operandOne} ${currentOperator}`
+  fitFont(display); //CHANGED
 }
 
 function doMathCalc() {
@@ -85,7 +87,10 @@ function doMathCalc() {
   }
   operandTwo = primaryDisplay.textContent;
   primaryDisplay.textContent = roundReturn(doMath(currentOperator, operandOne, operandTwo));
+  if (primaryDisplay.textContent.length > 12)
+    primaryDisplay.textContent = ((parseInt(primaryDisplay.textContent)).toExponential());
   secondaryDisplay.textContent = `${operandOne} ${currentOperator} ${operandTwo} =`;
+  fitFont(display);
   currentOperator = null;
   resetDisplay = true;
 }
@@ -98,6 +103,7 @@ function undoLastInput() {
   } else {
     primaryDisplay.textContent = secondaryDisplay.textContent.toString().slice(0, -1);
     secondaryDisplay.textContent = '';
+    fitFont(display);
     currentOperator = null
     operandTwo = '';
   }
@@ -121,9 +127,22 @@ function clear() {
 function clrDisplay() {
   if (secondaryDisplay.textContent !== '') {
     secondaryDisplay.textContent += ` ${primaryDisplay.textContent}`;
+    fitFont(display);
   }
   primaryDisplay.textContent = '';
   resetDisplay = false;
+}
+
+//font-size scaling
+function fitFont(textElement) {
+  let child = document.getElementById('line1');
+  let getFontSize = parseFloat(window.getComputedStyle(child).getPropertyValue('font-size'));
+    
+  while(child.offsetWidth > (textElement.clientWidth - 20)) {
+    getFontSize -= .1;
+    child.style.fontSize = getFontSize + 'px';
+  }
+  child.style.visibility = 'visible';
 }
 
 /*----------------------------
@@ -147,6 +166,7 @@ const clearBtn = document.getElementById('C');
 const backspaceBtn = document.getElementById('backspace');
 const secondaryDisplay = document.getElementById('line1');
 const primaryDisplay = document.getElementById('line2');
+const display = document.getElementById('display');
 
 /*----------------------------
 Event listeners-------------*/
@@ -181,4 +201,6 @@ function keebInput(i) {
 /* TO DO
 odd behavior why are C and CE buttons toggling/highlighting
 truncate numbers to fit in display
+
+implement proper history display
 */

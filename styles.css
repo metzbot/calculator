@@ -16,9 +16,8 @@
   margin: 0;
   padding: 0;
   font-family: monospace;
-  /*font-family: 'Helvetica Neue', sans-serif;*/
   font-weight: bold;
-  font-size: 48px;
+
 }
 
 body {
@@ -54,16 +53,27 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   border: 2px rgb(141, 141, 141) solid;
   background-color: rgb(97, 97, 97);
   color: white;
   text-align: right;
   height: 117px;
+  overflow: hidden;
+  align-items: end;
 }
 
 #line1 {
+  visibility: hidden;
+  white-space: nowrap;
   font-size: 36px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+#line2 {
+  font-size: 48px;
 }
 
 button {
@@ -71,7 +81,7 @@ button {
   border: 2px var(--border) solid;
   background-color: var(--btnbgcolor);
   color: white;
-  /*font-size: 20px;*/
+  font-size: 48px;
 }
 
 .operator {

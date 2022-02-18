@@ -58,7 +58,7 @@ function addDecimal() {
 
 function plusMinus() {
   if (resetDisplay) clrDisplay()
-  if (primaryDisplay.textContent.slice(0,1) === '-') {
+  if (primaryDisplay.textContent.slice(0, 1) === '-') {
     primaryDisplay.textContent = primaryDisplay.textContent.substring(1);
   } else {
     primaryDisplay.textContent = '-' + primaryDisplay.textContent;
@@ -88,7 +88,7 @@ function doMathCalc() {
   operandTwo = primaryDisplay.textContent;
   primaryDisplay.textContent = roundReturn(doMath(currentOperator, operandOne, operandTwo));
   if (primaryDisplay.textContent.length > 12)
-    primaryDisplay.textContent = ((parseInt(primaryDisplay.textContent)).toExponential());
+    primaryDisplay.textContent = ((parseInt(primaryDisplay.textContent)).toExponential(3));
   secondaryDisplay.textContent = `${operandOne} ${currentOperator} ${operandTwo} =`;
   fitFont(display);
   currentOperator = null;
@@ -100,14 +100,17 @@ function undoLastInput() {
   if (resetDisplay) return;
   if (primaryDisplay.textContent !== '') {
     primaryDisplay.textContent = primaryDisplay.textContent.toString().slice(0, -1);
+  } else if (secondaryDisplay.textContent.includes('=')) {
+    return;
   } else {
     primaryDisplay.textContent = secondaryDisplay.textContent.toString().slice(0, -1);
     secondaryDisplay.textContent = '';
     fitFont(display);
-    currentOperator = null
+    currentOperator = null;
     operandTwo = '';
   }
 }
+
 
 //only clears current operand
 function clearEntry() {
@@ -137,8 +140,8 @@ function clrDisplay() {
 function fitFont(textElement) {
   let child = document.getElementById('line1');
   let getFontSize = parseFloat(window.getComputedStyle(child).getPropertyValue('font-size'));
-    
-  while(child.offsetWidth > (textElement.clientWidth - 20)) {
+
+  while (child.offsetWidth > (textElement.clientWidth - 20)) {
     getFontSize -= .1;
     child.style.fontSize = getFontSize + 'px';
   }
